@@ -1,6 +1,6 @@
 <title>Cibin Mathew Simon</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Cibin Mathew Simon is a technical architect at Rappit, leading the architecture of an eCommerce platform built by a team of ten full-stack engineers, after years building ERP applications for a large European chemical company.">
+<meta name="description" content="Cibin Mathew Simon, technical architect at Rappit. A hands-on tour of event processing, data management and CI/CD, and the eCommerce and ERP systems behind them.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap">
@@ -16,6 +16,7 @@
   --cobalt: #2B40D4;     /* primary signal: structure, selection */
   --signal: #C98200;     /* amber: requests in flight, leads */
   --ok: #17885A;         /* live status */
+  --bad: #C2362B;        /* failures */
   --display: "Bricolage Grotesque", "Avenir Next Condensed", "Arial Narrow", system-ui, sans-serif;
   --body: "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --gutter-l: max(16px, env(safe-area-inset-left, 0px));
@@ -25,13 +26,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #0E1426; --surface: #151D35; --ink: #E7EBF4; --ink-soft: #A2ACC5;
-    --line: #2B3656; --cobalt: #8C98FF; --signal: #FFBF47; --ok: #43D394;
+    --line: #2B3656; --cobalt: #8C98FF; --signal: #FFBF47; --ok: #43D394; --bad: #FF7A6B;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --paper: #0E1426; --surface: #151D35; --ink: #E7EBF4; --ink-soft: #A2ACC5;
-  --line: #2B3656; --cobalt: #8C98FF; --signal: #FFBF47; --ok: #43D394;
+  --line: #2B3656; --cobalt: #8C98FF; --signal: #FFBF47; --ok: #43D394; --bad: #FF7A6B;
   color-scheme: dark;
 }
 
@@ -336,8 +337,208 @@ p { margin: 0; }
   border: 0; background: none; padding: 10px 16px; border-radius: 999px; cursor: pointer;
   font: 600 0.9375rem/1 var(--body); color: var(--ink-soft); transition: background .3s, color .3s;
 }
-.seg button[aria-checked="true"] { background: var(--ink); color: var(--paper); }
+.seg button[aria-checked="true"], .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 @media (max-width: 900px) { .erp { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Labs ---------- */
+.lab-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.lab-tabs button {
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--ink-soft); border-radius: 999px;
+  padding: 11px 18px; font: 600 0.9375rem/1 var(--body); cursor: pointer; transition: background .25s, color .25s, border-color .25s;
+}
+.lab-tabs button:hover { border-color: var(--cobalt); color: var(--ink); }
+.lab-tabs button[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.lab {
+  display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: clamp(20px, 3vw, 36px); align-items: start;
+  animation: stageIn .45s cubic-bezier(.2,.7,.2,1);
+}
+.lab-stage { position: relative; min-width: 0; border-radius: 24px; background: var(--surface); border: 1px solid var(--line); padding: clamp(16px, 3vw, 28px); }
+.lab-side { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.lab-side h3 { font-size: clamp(1.4rem, 2.4vw, 1.75rem); font-weight: 700; font-variation-settings: "wdth" 86; letter-spacing: -0.015em; line-height: 1.1; }
+.lab-side p { color: var(--ink-soft); }
+.lab-side p b { color: var(--ink); font-weight: 600; }
+.lab-ctrls { display: flex; flex-wrap: wrap; gap: 8px; }
+.mini {
+  border: 1.5px solid var(--ink); background: transparent; color: var(--ink); border-radius: 999px; padding: 10px 15px;
+  font: 600 0.875rem/1 var(--body); cursor: pointer; transition: background .2s, color .2s, border-color .2s, opacity .2s;
+}
+.mini:hover, .mini[aria-pressed="true"], .mini.solid { background: var(--ink); color: var(--paper); }
+.mini.solid:hover { background: var(--cobalt); border-color: var(--cobalt); color: var(--surface); }
+.mini:disabled { opacity: .35; pointer-events: none; }
+.stats { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.stats div { padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); min-width: 0; }
+.stats dt { font-size: 0.8125rem; color: var(--ink-soft); }
+.stats dd { margin: 0; font: 700 1.45rem/1.15 var(--display); font-variant-numeric: tabular-nums; }
+.toggles { display: grid; gap: 8px; }
+.toggle { display: flex; align-items: center; gap: 10px; font-size: 0.9375rem; cursor: pointer; }
+.toggle input { width: 18px; height: 18px; margin: 0; accent-color: var(--bad); cursor: pointer; }
+.range-row { display: grid; gap: 8px; font-size: 0.9375rem; }
+.range-row input { width: 100%; accent-color: var(--cobalt); cursor: pointer; }
+code { font: 500 0.85em/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.pulse { animation: pulse .5s; }
+@keyframes pulse { 40% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--cobalt) 30%, transparent); } }
+button.link {
+  justify-self: start; border: 0; background: none; padding: 0; color: var(--cobalt); cursor: pointer;
+  font: 600 0.9375rem/1.4 var(--body); text-underline-offset: 3px;
+}
+button.link:hover { text-decoration: underline; }
+@media (max-width: 900px) { .lab { grid-template-columns: minmax(0, 1fr); } }
+
+/* event processing */
+.ev { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px 22px; align-items: center; }
+.ev-src { display: grid; gap: 8px; justify-items: center; }
+.ev-flow::before { content: "↓"; color: var(--ink-soft); }
+.ev-box {
+  display: grid; gap: 2px; justify-items: center; text-align: center; padding: 12px 14px; min-width: 118px;
+  border-radius: 14px; border: 1.5px solid var(--line); background: var(--paper);
+}
+.ev-box b { font-size: 0.9375rem; font-weight: 650; }
+.ev-box small, .ev-con small, .ev-dlq small { display: block; color: var(--ink-soft); font-size: 0.75rem; }
+.ev-box.topic { border-color: var(--cobalt); }
+.ev-subs { display: grid; gap: 10px; min-width: 0; }
+.ev-row { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 10px; align-items: center; }
+.ev-lane {
+  height: 40px; display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding: 0 10px;
+  border-radius: 999px; border: 1px dashed var(--line); overflow: hidden;
+}
+.msg {
+  flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--cobalt);
+  animation: pop .35s cubic-bezier(.3,1.6,.5,1); transition: background .2s, transform .3s, opacity .3s;
+}
+.msg.busy { background: var(--signal); transform: scale(1.3); }
+.msg.fail { background: var(--bad); }
+.msg.done { background: var(--ok); transform: scale(0); opacity: 0; }
+.ev-con {
+  display: grid; gap: 2px; text-align: left; padding: 9px 12px; border-radius: 14px; cursor: pointer; color: var(--ink); font: inherit;
+  border: 1.5px solid var(--ok); background: color-mix(in srgb, var(--ok) 8%, var(--paper)); transition: border-color .25s, background .25s;
+}
+.ev-con b { font-size: 0.9375rem; font-weight: 650; }
+.ev-con[aria-pressed="true"] { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 10%, var(--paper)); }
+.ev-dlq {
+  grid-column: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 14px; border-radius: 14px; border: 1.5px dashed var(--bad);
+}
+.ev-dlq b { font: 700 1.5rem/1 var(--display); color: var(--bad); font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) {
+  .ev { grid-template-columns: minmax(0, 1fr); }
+  .ev-src { grid-auto-flow: column; justify-content: start; align-items: center; }
+  .ev-flow::before { content: "→"; }
+  .ev-box { min-width: 0; }
+  .ev-row { grid-template-columns: minmax(0, 1fr) 128px; }
+  .ev-dlq { grid-column: auto; }
+}
+
+/* CI/CD */
+.ci-stages { list-style: none; margin: 0 0 22px; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.ci-stages li { position: relative; display: grid; gap: 4px; justify-items: center; align-content: start; text-align: center; }
+.ci-stages li::after {
+  content: ""; position: absolute; top: 15px; left: calc(50% + 20px); right: calc(-50% + 14px); height: 2px;
+  background: var(--line); transition: background .3s;
+}
+.ci-stages li:last-child::after { display: none; }
+.ci-stages li.ok::after { background: var(--ok); }
+.ci-dot {
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--line);
+  background: var(--paper); color: var(--ink-soft); font: 700 0.8125rem/1 var(--display); transition: background .3s, border-color .3s, color .3s;
+}
+.ci-stages b { font-size: 0.8125rem; font-weight: 650; line-height: 1.2; }
+.ci-stages small { font-size: 0.6875rem; color: var(--ink-soft); line-height: 1.25; }
+.ci-stages li.run .ci-dot { border-color: var(--signal); color: var(--signal); animation: ciRun 1s ease-in-out infinite; }
+.ci-stages li.ok .ci-dot { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.ci-stages li.fail .ci-dot { background: var(--bad); border-color: var(--bad); color: var(--surface); }
+@keyframes ciRun { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--signal) 22%, transparent); } }
+.ci-roll { display: grid; gap: 8px; margin-bottom: 18px; }
+.ci-roll-head { display: flex; justify-content: space-between; gap: 12px; font-size: 0.875rem; color: var(--ink-soft); }
+.ci-roll-head b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.ci-bar { height: 10px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); overflow: hidden; }
+.ci-bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--cobalt); transition: width .6s cubic-bezier(.2,.7,.2,1), background .3s; }
+.ci-bar i.bad { background: var(--bad); }
+.ci-log {
+  min-height: calc(9 * 1.65em + 28px); padding: 14px 16px; border-radius: 14px; overflow: hidden; overflow-wrap: anywhere;
+  background: #0B1020; color: #C9D2E6; font: 500 0.8125rem/1.65 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.ci-log .ok { color: #4ADE9A; }
+.ci-log .bad { color: #FF8A7A; }
+.ci-log .warn { color: #FFC857; }
+.ci-log .dim { color: #7F8AA8; }
+@media (max-width: 700px) {
+  .ci-stages { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .ci-stages li { grid-template-columns: 28px minmax(0, 1fr); justify-items: start; text-align: left; column-gap: 12px; row-gap: 0; align-items: center; }
+  .ci-stages .ci-dot { grid-row: span 2; width: 28px; height: 28px; }
+  .ci-stages li::after { display: none; }
+}
+
+/* caching */
+.dl-flow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px; }
+.dl-col { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.dl-label { font-size: 0.8125rem; font-weight: 650; }
+.dl-label small { font-weight: 500; color: var(--ink-soft); }
+.dl-keys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.dl-keys button {
+  padding: 11px 0; border-radius: 12px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink);
+  font: 700 0.9375rem/1 var(--display); cursor: pointer; transition: border-color .2s, transform .2s;
+}
+.dl-keys button:hover { border-color: var(--cobalt); transform: translateY(-2px); }
+.dl-box { min-height: 176px; padding: 10px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--paper); }
+.dl-box.hit { animation: flashHit .7s; }
+.dl-box.miss { animation: flashMiss .7s; }
+.dl-box.write { animation: flashWrite .7s; }
+@keyframes flashHit { 30% { border-color: var(--ok); box-shadow: 0 0 0 5px color-mix(in srgb, var(--ok) 22%, transparent); } }
+@keyframes flashMiss { 30% { border-color: var(--signal); box-shadow: 0 0 0 5px color-mix(in srgb, var(--signal) 24%, transparent); } }
+@keyframes flashWrite { 30% { border-color: var(--cobalt); box-shadow: 0 0 0 5px color-mix(in srgb, var(--cobalt) 22%, transparent); } }
+.dl-box ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.dl-box li {
+  display: grid; grid-template-columns: 2.2em minmax(0, 1fr); align-items: center; gap: 8px;
+  font: 600 0.8125rem/1 var(--body); font-variant-numeric: tabular-nums; animation: pop .3s cubic-bezier(.3,1.6,.5,1);
+  transition: opacity .3s, transform .3s;
+}
+.dl-box li i { display: block; height: 6px; border-radius: 999px; background: var(--ok); transform-origin: left; }
+.dl-box li.evict { opacity: 0; transform: translateX(12px); }
+.dl-empty { color: var(--ink-soft); font-size: 0.8125rem; }
+.dl-db { display: grid; place-content: center; justify-items: center; gap: 4px; text-align: center; }
+.dl-db b { font: 800 2.2rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.dl-db small { color: var(--ink-soft); font-size: 0.8125rem; }
+.dl-chart { margin-top: 20px; height: 88px; display: flex; align-items: flex-end; gap: 3px; border-bottom: 1px solid var(--line); }
+.dl-chart i { flex: 1 1 0; min-width: 0; height: 0; border-radius: 3px 3px 0 0; transition: height .3s; }
+.dl-chart i.hit, .dl-key i.hit { background: var(--ok); }
+.dl-chart i.miss, .dl-key i.miss { background: var(--signal); }
+.dl-chart i.write, .dl-key i.write { background: var(--cobalt); }
+.dl-key { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; font-size: 0.8125rem; color: var(--ink-soft); }
+.dl-key span { display: inline-flex; align-items: center; gap: 6px; }
+.dl-key i { width: 10px; height: 10px; border-radius: 3px; }
+.dl-trace { margin-top: 12px; min-height: 3.2em; color: var(--ink-soft); font: 500 0.8125rem/1.6 ui-monospace, "SF Mono", Menlo, Consolas, monospace; overflow-wrap: anywhere; }
+@media (max-width: 700px) {
+  .dl-flow { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .dl-flow .dl-col:first-child { grid-column: 1 / -1; }
+  .dl-keys { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+/* ---------- Skills ---------- */
+.skills { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.filters button {
+  border: 0; background: none; padding: 8px 12px; border-radius: 999px; cursor: pointer; color: var(--ink-soft);
+  font: 600 0.875rem/1 var(--body); transition: background .2s, color .2s;
+}
+.filters button small { font-weight: 500; opacity: .7; margin-left: 4px; }
+.filters button:hover { color: var(--ink); }
+.filters button[aria-pressed="true"] { background: color-mix(in srgb, var(--cobalt) 14%, transparent); color: var(--cobalt); }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.chips button {
+  padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+  font: 600 0.9375rem/1.2 var(--body); cursor: pointer; transition: border-color .25s, color .25s, background .25s, transform .25s;
+}
+.chips button:hover { border-color: var(--cobalt); color: var(--cobalt); transform: translateY(-3px); }
+.chips button[aria-pressed="true"] { background: var(--cobalt); border-color: var(--cobalt); color: var(--surface); }
+.skill-card {
+  position: sticky; top: 92px; display: grid; gap: 12px; padding: clamp(22px, 3vw, 32px);
+  border-radius: 20px; background: var(--surface); border: 1px solid var(--line);
+}
+.skill-card.swap { animation: stageIn .4s cubic-bezier(.2,.7,.2,1); }
+.skill-cat { font-size: 0.75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--cobalt); }
+.skill-card h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 700; font-variation-settings: "wdth" 86; letter-spacing: -0.02em; line-height: 1.1; }
+.skill-card p { color: var(--ink-soft); }
+@media (max-width: 900px) { .skills { grid-template-columns: minmax(0, 1fr); } .skill-card { position: static; } }
 
 /* ---------- Scroll effects ---------- */
 .progress {
@@ -367,7 +568,7 @@ p { margin: 0; }
 .path h3 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; font-variation-settings: "wdth" 86; letter-spacing: -0.02em; line-height: 1.1; }
 .path p { color: var(--ink-soft); max-width: 60ch; }
 
-/* ---------- Portrait, toolkit ---------- */
+/* ---------- Portrait ---------- */
 .who { display: flex; align-items: center; gap: 16px; }
 .avatar {
   width: clamp(64px, 7vw, 84px); height: clamp(64px, 7vw, 84px); border-radius: 50%; object-fit: cover; flex: none;
@@ -375,19 +576,6 @@ p { margin: 0; }
   transition: transform .4s cubic-bezier(.2,.7,.2,1);
 }
 .avatar:hover { transform: rotate(-4deg) scale(1.06); }
-.toolkit { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
-.toolkit h3 { font-size: 1.25rem; font-weight: 650; font-variation-settings: "wdth" 90; margin-bottom: 16px; }
-.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-.chips li {
-  padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface);
-  font-weight: 600; font-size: 0.9375rem; transition: border-color .25s, color .25s, transform .25s;
-}
-.chips li:hover { border-color: var(--cobalt); color: var(--cobalt); transform: translateY(-3px); }
-.certs { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.certs li { padding: 18px 20px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); display: grid; gap: 4px; }
-.certs b { font-family: var(--display); font-size: 1.15rem; font-variation-settings: "wdth" 88; }
-.certs span { color: var(--ink-soft); font-size: 0.9375rem; }
-@media (max-width: 900px) { .toolkit { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Principles ---------- */
 .principles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 5vw, 64px); }
@@ -447,8 +635,9 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
   <div class="wrap">
     <a class="mark" href="#top"><span class="mark-node" aria-hidden="true"></span>Cibin Mathew Simon</a>
     <nav class="nav" aria-label="Sections">
+      <a href="#labs">Labs</a>
+      <a href="#skills">Skills</a>
       <a href="#platform">Platform</a>
-      <a href="#team">Team</a>
       <a href="#erp">ERP</a>
       <a href="#path">Path</a>
       <a href="#contact">Contact</a>
@@ -473,9 +662,9 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
           <img class="avatar" src="photo.jpg" width="84" height="84" alt="Portrait of Cibin Mathew Simon">
           <p class="role">Technical architect at Rappit</p>
         </div>
-        <p class="lede">Eight years building software at Rappit. Today I am the technical architect of the team building an <strong>eCommerce platform</strong>, from the first requirement to production. Before that, I grew from a full-stack Java and Angular developer to architect while we built and maintained <strong>around 20 ERP applications</strong> for a large European chemical company.</p>
+        <p class="lede">I design and build software at Rappit: right now the architecture of an <strong>eCommerce platform</strong>, and before that a portfolio of <strong>around 20 ERP applications</strong>. This site is a hands-on tour of the ideas behind that work: events, data, delivery pipelines and how the pieces fit together.</p>
         <div class="actions">
-          <a class="btn btn-solid" href="#platform" data-magnetic>See the platform</a>
+          <a class="btn btn-solid" href="#labs" data-magnetic>Try the labs</a>
           <a class="btn btn-ghost" href="#contact" data-magnetic>Get in touch</a>
         </div>
       </div>
@@ -489,23 +678,151 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
     </div>
   </section>
 
+  <section class="section" id="labs">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Architecture, hands-on</h2>
+        <p>Three small simulations of patterns that come up in almost every system. They run entirely in your browser, so click around and try to break them.</p>
+      </div>
+      <div class="lab-tabs" role="tablist" aria-label="Labs" id="lab-tabs">
+        <button type="button" role="tab" id="lab-tab-events" data-tab="events" aria-controls="lab-events" aria-selected="true">Event processing</button>
+        <button type="button" role="tab" id="lab-tab-cicd" data-tab="cicd" aria-controls="lab-cicd" aria-selected="false" tabindex="-1">CI/CD pipeline</button>
+        <button type="button" role="tab" id="lab-tab-data" data-tab="data" aria-controls="lab-data" aria-selected="false" tabindex="-1">Caching and data</button>
+      </div>
+      <div class="labs-body">
+        <div class="lab" id="lab-events" role="tabpanel" aria-labelledby="lab-tab-events">
+          <div class="lab-stage ev">
+            <div class="ev-src">
+              <div class="ev-box"><b>Checkout</b><small>producer</small></div>
+              <span class="ev-flow" aria-hidden="true"></span>
+              <div class="ev-box topic" id="ev-topic"><b><code>order.placed</code></b><small>topic</small></div>
+            </div>
+            <div class="ev-subs" id="ev-subs"></div>
+            <div class="ev-dlq"><div><code>order.placed.dlq</code><small>dead-letter queue</small></div><b id="ev-dlq">0</b></div>
+          </div>
+          <div class="lab-side">
+            <h3>Publish once, process independently</h3>
+            <p>Checkout publishes an <code>order.placed</code> event and moves on. Each subscriber gets its own copy and works through its queue at its own pace, so a slow or broken consumer never holds up checkout.</p>
+            <p><b>Try it:</b> click <b>Email</b> to make it fail. Its messages retry with exponential backoff, then move to the dead-letter queue while Inventory and Analytics carry on. Fix it, then redrive the queue.</p>
+            <div class="lab-ctrls">
+              <button type="button" class="mini solid" id="ev-pub">Publish event</button>
+              <button type="button" class="mini" id="ev-burst">Burst of 10</button>
+              <button type="button" class="mini" id="ev-auto" aria-pressed="true">Live traffic</button>
+              <button type="button" class="mini" id="ev-redrive" disabled>Redrive DLQ</button>
+            </div>
+            <dl class="stats">
+              <div><dt>Published</dt><dd id="ev-s-pub">0</dd></div>
+              <div><dt>Processed</dt><dd id="ev-s-done">0</dd></div>
+              <div><dt>Retries</dt><dd id="ev-s-retry">0</dd></div>
+              <div><dt>Waiting in queues</dt><dd id="ev-s-q">0</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-cicd" role="tabpanel" aria-labelledby="lab-tab-cicd" hidden>
+          <div class="lab-stage">
+            <ol class="ci-stages" id="ci-stages"></ol>
+            <div class="ci-roll">
+              <div class="ci-roll-head"><span>Production traffic on <b id="ci-new">the new version</b></span><b id="ci-pct">0%</b></div>
+              <div class="ci-bar"><i id="ci-bar"></i></div>
+            </div>
+            <div class="ci-log" id="ci-log" role="log" aria-live="polite"></div>
+          </div>
+          <div class="lab-side">
+            <h3>Every change takes the same road</h3>
+            <p>A commit is built, tested and scanned automatically. Only then is it deployed to staging and rolled out to production in steps, with a health check between each step.</p>
+            <p><b>Try it:</b> push a clean commit, then switch on a problem below and push again. A failing gate stops the pipeline; an error spike in production triggers an automatic rollback.</p>
+            <div class="lab-ctrls"><button type="button" class="mini solid" id="ci-push">Push a commit</button></div>
+            <div class="toggles">
+              <label class="toggle"><input type="checkbox" id="ci-f-test"> Break a unit test</label>
+              <label class="toggle"><input type="checkbox" id="ci-f-vuln"> Add a vulnerable dependency</label>
+              <label class="toggle"><input type="checkbox" id="ci-f-prod"> Error spike after release</label>
+            </div>
+            <dl class="stats">
+              <div><dt>In production</dt><dd id="ci-live">v1.4.0</dd></div>
+              <div><dt>Releases</dt><dd id="ci-ok">0</dd></div>
+              <div><dt>Stopped at a gate</dt><dd id="ci-stop">0</dd></div>
+              <div><dt>Rollbacks</dt><dd id="ci-rb">0</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-data" role="tabpanel" aria-labelledby="lab-tab-data" hidden>
+          <div class="lab-stage">
+            <div class="dl-flow">
+              <div class="dl-col">
+                <span class="dl-label">Products <small id="dl-hint">click to read</small></span>
+                <div class="dl-keys" id="dl-keys"></div>
+              </div>
+              <div class="dl-col">
+                <span class="dl-label">Cache <small>in memory, with TTL</small></span>
+                <div class="dl-box" id="dl-cache"><ul id="dl-entries"></ul><p class="dl-empty" id="dl-empty">empty</p></div>
+              </div>
+              <div class="dl-col">
+                <span class="dl-label">Database <small>system of record</small></span>
+                <div class="dl-box dl-db" id="dl-db"><b id="dl-db-n">0</b><small>queries</small></div>
+              </div>
+            </div>
+            <div class="dl-chart" id="dl-chart" aria-hidden="true"></div>
+            <div class="dl-key" aria-hidden="true"><span><i class="hit"></i>cache hit</span><span><i class="miss"></i>cache miss</span><span><i class="write"></i>write</span><span>bar height = latency</span></div>
+            <p class="dl-trace" id="dl-trace" aria-live="polite">Pick a product to read it.</p>
+          </div>
+          <div class="lab-side">
+            <h3>Cache-aside, with invalidation</h3>
+            <p>Reads check the cache first. A miss falls through to the database, and the result is cached with a time-to-live. Writes go to the database and evict the cached copy, so readers do not keep seeing stale data.</p>
+            <p><b>Try it:</b> read a product twice, then update it. Turn on live traffic and watch popular products become cache hits, then shorten the TTL and watch the hit ratio drop.</p>
+            <div class="seg" id="dl-mode" role="group" aria-label="Request type">
+              <button type="button" aria-pressed="true" data-mode="read">Read</button>
+              <button type="button" aria-pressed="false" data-mode="write">Update</button>
+            </div>
+            <div class="lab-ctrls">
+              <button type="button" class="mini" id="dl-auto" aria-pressed="false">Live traffic</button>
+              <button type="button" class="mini" id="dl-flush">Flush cache</button>
+            </div>
+            <div class="range-row"><label for="dl-ttl">Time-to-live: <b id="dl-ttl-v">12 s</b></label><input type="range" id="dl-ttl" min="2" max="30" value="12"></div>
+            <dl class="stats">
+              <div><dt>Hit ratio, recent</dt><dd id="dl-ratio">–</dd></div>
+              <div><dt>Avg read latency</dt><dd id="dl-avg">–</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Skills, explained</h2>
+        <p>Pick a skill to see what it means in practice. Some of them have a lab above you can try.</p>
+      </div>
+      <div class="skills">
+        <div>
+          <div class="filters" id="skill-filters" role="group" aria-label="Filter skills by area"></div>
+          <ul class="chips" id="skill-chips"></ul>
+        </div>
+        <div class="skill-card" id="skill-card" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="platform">
     <div class="wrap">
       <div class="platform-top">
         <div class="sec-head">
-          <span class="live"><i aria-hidden="true"></i>Live in production</span>
-          <h2>An eCommerce platform, owned end to end</h2>
-          <p>As technical architect, I lead the architecture of the platform our team of ten designed, built and shipped. Together we took it through every stage of the software lifecycle, from gathering requirements with the business to deploying it to production and keeping it healthy there.</p>
+          <span class="live"><i aria-hidden="true"></i>In production</span>
+          <h2>Inside an eCommerce platform</h2>
+          <p>The map at the top of the page is an illustrative view of how a system like this fits together: a storefront, an API gateway, services for catalog, cart, checkout and payments, and an event queue that tells the rest of the system an order was placed. Below is the path a feature takes from an idea to production.</p>
         </div>
         <div class="tilt-zone">
           <div class="tilt" id="tilt">
-            <h3>My role on the platform</h3>
+            <h3>At a glance</h3>
             <dl class="facts">
-              <div><dt>Title</dt><dd>Technical architect</dd></div>
+              <div><dt>My role</dt><dd>Technical architect</dd></div>
               <div><dt>Team</dt><dd>Ten full-stack engineers: leads and mediors</dd></div>
               <div><dt>Scope</dt><dd>Requirements through production deployment</dd></div>
               <div><dt>Company</dt><dd>Rappit</dd></div>
-              <div><dt>Status</dt><dd>Used by customers in production</dd></div>
+              <div><dt>Status</dt><dd>In production</dd></div>
             </dl>
           </div>
         </div>
@@ -513,8 +830,8 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
 
       <div class="pipeline">
         <div class="pipeline-head">
-          <h3>The full lifecycle, stage by stage</h3>
-          <p>Select a stage to see what I did there.</p>
+          <h3>From requirement to production</h3>
+          <p>Select a stage to see what it involves.</p>
         </div>
         <div class="track" role="tablist" aria-label="Software lifecycle stages" id="track">
           <span class="track-line" aria-hidden="true"></span>
@@ -529,8 +846,8 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
   <section class="section" id="team">
     <div class="wrap">
       <div class="sec-head">
-        <h2>An expert team of ten</h2>
-        <p>The eCommerce platform is built by a team of ten full-stack engineers, leads and mediors, with me as technical architect. Move your pointer over the team to nudge it.</p>
+        <h2>How the team is organised</h2>
+        <p>The platform is built by ten full-stack engineers, leads and mediors, working in streams. Move your pointer over the chart to nudge it.</p>
       </div>
       <div class="team-grid">
         <div class="org" id="org" aria-hidden="true">
@@ -538,7 +855,7 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
         </div>
         <div class="team-side">
           <p class="headcount"><span id="headcount">10</span><small>people on the team</small></p>
-          <div class="stage-note" id="stage-note"><b>Leads and medior full-stack engineers</b><p>Every engineer works across the stack. Leads own the day-to-day of their stream, while I own the architecture and keep the technical direction consistent.</p></div>
+          <div class="stage-note" id="stage-note"><b>Streams with clear ownership</b><p>Every engineer works across the stack. Leads own the day-to-day delivery of a stream, and a shared architecture keeps the streams building the same way.</p></div>
           <div class="legend"><span><i class="m"></i>Me</span><span><i class="l"></i>Lead</span><span><i></i>Medior engineer</span></div>
         </div>
       </div>
@@ -548,8 +865,8 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
   <section class="section" id="erp">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Around 20 ERP applications</h2>
-        <p>Before the eCommerce platform, we developed and maintained around 20 ERP applications for a large European chemical company. Switch the view to see how my focus changed as I grew from developer to architect, and hover or tap an application.</p>
+        <h2>One application, or twenty</h2>
+        <p>Before the eCommerce platform, we developed and maintained around 20 ERP applications for a large European chemical company. Switch views to see how the problems change with scale, and hover or tap an application.</p>
       </div>
       <div class="erp">
         <div class="erp-board" id="erp-board" aria-hidden="true">
@@ -558,8 +875,8 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
         </div>
         <div class="erp-side">
           <div class="seg" role="radiogroup" aria-label="Point of view" id="erp-seg">
-            <button type="button" role="radio" aria-checked="true" data-view="dev">As a developer</button>
-            <button type="button" role="radio" aria-checked="false" data-view="arch">As an architect</button>
+            <button type="button" role="radio" aria-checked="true" data-view="dev">One application</button>
+            <button type="button" role="radio" aria-checked="false" data-view="arch">The portfolio</button>
           </div>
           <p class="headcount"><span id="erp-count">1</span><small id="erp-count-label">application in focus</small></p>
           <div class="stage-note" id="erp-note" aria-live="polite"></div>
@@ -572,83 +889,70 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
     <div class="wrap">
       <div class="sec-head">
         <h2>Eight years at Rappit</h2>
-        <p>Five roles at one company: from associate software engineer, through team and technical lead, to solution architect.</p>
+        <p>Five roles at one company, from associate software engineer to solution architect.</p>
       </div>
       <ol class="path" id="path-list">
         <li>
           <span class="when">Jun 2018 to Jan 2020</span>
           <h3>Associate Software Engineer</h3>
-          <p>Joined Rappit and started building ERP applications for a large European chemical company as a full-stack Java and Angular developer.</p>
+          <p>Started on ERP applications for a large European chemical company, working full-stack with Java and Angular.</p>
         </li>
         <li>
           <span class="when">Jan 2020 to Jan 2022</span>
           <h3>Software Engineer</h3>
-          <p>Built and maintained features across the growing ERP portfolio, from APIs and databases to Angular front ends.</p>
+          <p>Features across the ERP portfolio, from APIs and databases to Angular front ends.</p>
         </li>
         <li>
           <span class="when">Jan 2022 to Feb 2023</span>
           <h3>Team Lead</h3>
-          <p>Started leading engineers on the ERP applications, alongside hands-on development.</p>
+          <p>Leading a group of engineers on the ERP applications while still writing code.</p>
         </li>
         <li>
           <span class="when">Jan 2023 to Mar 2024</span>
           <h3>Technical Lead</h3>
-          <p>Owned technical direction across applications in a portfolio of around 20, keeping them consistent and easy to change.</p>
+          <p>Technical direction for several applications in the portfolio, with a focus on keeping them consistent.</p>
         </li>
         <li class="now">
           <span class="when">Feb 2024 to present</span>
           <h3>Associate Solution Architect</h3>
-          <p>Architect on the ERP portfolio, and now technical architect of an expert team of ten building an eCommerce platform, from requirement gathering to production deployment.</p>
+          <p>Architecture for the ERP portfolio, and now for an eCommerce platform built by a team of ten, from requirements to production.</p>
         </li>
       </ol>
-    </div>
-  </section>
-
-  <section class="section" id="toolkit">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2>Toolkit and certifications</h2>
-      </div>
-      <div class="toolkit">
-        <div>
-          <h3>What I work with</h3>
-          <ul class="chips">
-            <li>Java</li><li>Angular</li><li>Full-stack development</li><li>REST APIs</li>
-            <li>SQL databases</li><li>NoSQL databases</li><li>Google Cloud</li><li>Solution architecture</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Certifications</h3>
-          <ul class="certs">
-            <li><b>Professional Cloud Developer</b><span>Google Cloud · Issued Aug 2022</span></li>
-            <li><b>Industrial IoT on Google Cloud</b><span>Qwiklabs · Issued Aug 2020</span></li>
-          </ul>
-        </div>
-      </div>
     </div>
   </section>
 
   <section class="section" id="approach">
     <div class="wrap">
       <div class="sec-head">
-        <h2>How I work</h2>
+        <h2>Principles I design by</h2>
       </div>
       <ul class="principles">
         <li>
+          <h3>Boundaries first</h3>
+          <p>Draw services and modules around business capabilities, so a change in one place does not ripple through everything else.</p>
+        </li>
+        <li>
+          <h3>Events at the seams</h3>
+          <p>Between systems, publish facts such as "order placed" and let others react. Keep synchronous calls for when an answer is needed right now.</p>
+          <button type="button" class="link" data-lab="events">See it in the event lab →</button>
+        </li>
+        <li>
+          <h3>One owner per piece of data</h3>
+          <p>Every entity has one system of record. Everything else is a copy with a known freshness, like a cache with a time-to-live.</p>
+          <button type="button" class="link" data-lab="data">See it in the caching lab →</button>
+        </li>
+        <li>
+          <h3>Automate the road to production</h3>
+          <p>Every change goes through the same pipeline: build, test, scan, deploy. Small, frequent releases are easier to reason about and to roll back.</p>
+          <button type="button" class="link" data-lab="cicd">See it in the pipeline lab →</button>
+        </li>
+        <li>
+          <h3>Design for failure</h3>
+          <p>Assume any call can fail. Timeouts, retries with backoff, idempotent consumers and dead-letter queues turn failures into something routine.</p>
+        </li>
+        <li>
           <h3>Start from the business outcome</h3>
-          <p>Requirements come before diagrams. I spend time with stakeholders until the goal is clear, then design the simplest system that meets it.</p>
-        </li>
-        <li>
-          <h3>Design for the second year</h3>
-          <p>Launch day is the start. I plan for monitoring, maintenance and change so the system is still easy to work on long after go-live.</p>
-        </li>
-        <li>
-          <h3>Stay close to the code</h3>
-          <p>I design and I build. Writing code on the platform keeps my architecture decisions honest and practical for the team.</p>
-        </li>
-        <li>
-          <h3>Lead through clear ownership</h3>
-          <p>A team works best when everyone knows what they own. I set shared standards and give leads room to lead.</p>
+          <p>Requirements come before diagrams. The simplest design that meets the goal is usually the one that lasts.</p>
         </li>
       </ul>
     </div>
@@ -656,8 +960,8 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
 
   <section class="contact" id="contact">
     <div class="wrap">
-      <h2>Have a system to design or a team to grow?</h2>
-      <p>I am happy to talk about software architecture, eCommerce platforms, ERP solutions and leading engineering teams.</p>
+      <h2>Want to talk architecture?</h2>
+      <p>Always happy to swap notes on event-driven systems, data, delivery pipelines and eCommerce.</p>
       <div class="actions">
         <a class="btn btn-solid" href="https://www.linkedin.com/in/cibin-mathew-simon/" target="_blank" rel="noopener" data-magnetic>Connect on LinkedIn</a>
       </div>
@@ -982,28 +1286,28 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
   /* ---------- Lifecycle stepper ---------- */
   const STAGES = [
     ['Requirements', 'Gathering requirements', [
-      'Ran workshops with business stakeholders to turn goals into user journeys and scope.',
-      'Wrote clear acceptance criteria so everyone agreed on what "done" meant.',
-      'Prioritised a first release that could go live and prove value early.']],
+      'Workshops with business stakeholders turn goals into user journeys and scope.',
+      'Acceptance criteria written up front, so "done" means the same thing to everyone.',
+      'A first release small enough to go live early and prove value.']],
     ['Architecture', 'Designing the system', [
-      'Defined the overall solution: service boundaries, data model and integrations such as payments.',
-      'Set targets for performance, security and availability before writing code.',
-      'Recorded the key design decisions so the team could follow the reasoning.']],
+      'Service boundaries, the data model and integrations such as payments, decided before code.',
+      'Targets for performance, security and availability, written down as requirements.',
+      'Architecture decision records, so the reasoning survives after the meeting.']],
     ['Build', 'Building it', [
-      'Developed core features hands-on alongside the team.',
-      'Set the engineering conventions: code structure, reviews and branching.',
-      'Kept the architecture and the code in step as requirements changed.']],
+      'Shared conventions for code structure, reviews and branching.',
+      'Contract-first APIs, so front end and services can be built in parallel.',
+      'Architecture and code kept in step as requirements change.']],
     ['Testing', 'Testing and quality', [
-      'Defined the test strategy across unit, integration and user acceptance testing.',
-      'Worked with the business on acceptance testing before each release.',
-      'Treated defects found late as input to improve the process.']],
+      'A test pyramid: many fast unit tests, fewer integration tests, a focused set of end-to-end checks.',
+      'User acceptance testing with the business before each release.',
+      'Defects found late feed back into the process, not just the backlog.']],
     ['Deployment', 'Going to production', [
-      'Set up environments and automated build and deployment pipelines.',
-      'Planned and led the production go-live.',
-      'Prepared rollback and release checklists so releases stay calm.']],
+      'Automated build and deployment pipelines for every environment.',
+      'Planned go-lives with release checklists.',
+      'A tested rollback path for every release.']],
     ['Operations', 'Running it in production', [
-      'The platform is live and used by customers today.',
-      'Monitoring, incident response and regular releases keep it healthy.',
+      'Monitoring and alerts on what customers feel: errors and latency.',
+      'Incident response and small, regular releases.',
       'Feedback from production shapes the next set of requirements.']],
   ];
   const track = document.getElementById('track');
@@ -1142,8 +1446,8 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
   const erpNote = document.getElementById('erp-note');
   const APPS = 20, COLS = 5;
   const VIEWS = {
-    dev: ['Full-stack Java and Angular developer', 'Building and shipping features inside one application at a time, across the whole stack from database to Angular front end.'],
-    arch: ['Architect across the portfolio', 'Keeping around 20 applications consistent: shared standards, clean integrations between them, and one way to build, test and release.'],
+    dev: ['Inside one application', 'Features, a clean data model and a responsive Angular front end on top of Java APIs. Most decisions stay local to the application.'],
+    arch: ['Across the portfolio', 'With around 20 applications, the hard problems move to the seams: shared data, integrations between applications, and one consistent way to build, test and release.'],
   };
   const tiles = Array.from({ length: APPS }, (_, i) => {
     const t = document.createElement('div');
@@ -1241,6 +1545,315 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
     requestAnimationFrame(erpTick);
   })(performance.now());
 
+  /* ---------- Labs ---------- */
+  const byId = id => document.getElementById(id);
+  const restart = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
+  const LABS = ['events', 'cicd', 'data'];
+  const labTabs = [...document.querySelectorAll('#lab-tabs [role="tab"]')];
+  let lab = 'events', labsVisible = false;
+  function selectLab(name, focus) {
+    lab = name;
+    labTabs.forEach(t => {
+      const on = t.dataset.tab === name;
+      t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+    LABS.forEach(n => byId('lab-' + n).hidden = n !== name);
+  }
+  labTabs.forEach(t => t.addEventListener('click', () => selectLab(t.dataset.tab)));
+  byId('lab-tabs').addEventListener('keydown', e => {
+    const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (!k) return;
+    e.preventDefault();
+    selectLab(LABS[(LABS.indexOf(lab) + k + LABS.length) % LABS.length], true);
+  });
+  // "See it in the lab" links elsewhere on the page
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-lab]');
+    if (b) { selectLab(b.dataset.lab); byId('labs').scrollIntoView(); }
+  });
+  new IntersectionObserver(([en]) => { labsVisible = en.isIntersecting; }, { threshold: 0.1 }).observe(byId('labs'));
+
+  /* Lab: event processing */
+  const ev = { pub: 0, done: 0, retry: 0, dlq: [], auto: !RM, lastAuto: 0 };
+  const evAuto = byId('ev-auto'), evRedrive = byId('ev-redrive');
+  const cons = [['Inventory', 650], ['Email', 900], ['Analytics', 420]].map(([name, ms]) => {
+    const row = document.createElement('div');
+    row.className = 'ev-row';
+    row.innerHTML = `<div class="ev-lane" aria-hidden="true"></div><button type="button" class="ev-con" aria-pressed="false"><b>${name}</b><small></small></button>`;
+    byId('ev-subs').appendChild(row);
+    const c = { ms, q: [], failing: false, next: 0, lane: row.firstElementChild, btn: row.lastElementChild };
+    c.btn.addEventListener('click', () => { c.failing = !c.failing; c.btn.setAttribute('aria-pressed', c.failing); evStats(); });
+    return c;
+  });
+  function enqueue(c) {
+    const el = document.createElement('i');
+    el.className = 'msg';
+    c.lane.prepend(el); // newest on the left, oldest next to the consumer
+    c.q.push({ el, tries: 0, busy: false });
+  }
+  function publish(n = 1) {
+    for (let i = 0; i < n; i++) { ev.pub++; cons.forEach(enqueue); }
+    restart(byId('ev-topic'), 'pulse');
+    evStats();
+  }
+  function evStats() {
+    cons.forEach(c => { c.btn.lastElementChild.textContent = `${c.failing ? 'failing' : 'healthy'} · ${c.q.length} queued`; });
+    byId('ev-s-pub').textContent = ev.pub;
+    byId('ev-s-done').textContent = ev.done;
+    byId('ev-s-retry').textContent = ev.retry;
+    byId('ev-s-q').textContent = cons.reduce((n, c) => n + c.q.length, 0);
+    byId('ev-dlq').textContent = ev.dlq.length;
+    evRedrive.disabled = !ev.dlq.length;
+  }
+  function evStep(now) {
+    if (ev.auto && now - ev.lastAuto > 1100) { ev.lastAuto = now; publish(); }
+    cons.forEach(c => {
+      const m = c.q[0];
+      if (!m || now < c.next) return;
+      if (!m.busy) { m.busy = true; m.el.className = 'msg busy'; c.next = now + c.ms; return; }
+      m.busy = false;
+      if (!c.failing) {
+        c.q.shift(); ev.done++;
+        m.el.className = 'msg done'; setTimeout(() => m.el.remove(), 300);
+      } else if (++m.tries < 3) {
+        ev.retry++; m.el.className = 'msg fail';
+        c.next = now + c.ms * 2 ** m.tries; // exponential backoff before the next attempt
+      } else {
+        c.q.shift(); m.el.remove(); ev.dlq.push(c);
+        restart(byId('ev-dlq').parentElement, 'pulse');
+      }
+      evStats();
+    });
+  }
+  byId('ev-pub').addEventListener('click', () => publish());
+  byId('ev-burst').addEventListener('click', () => publish(10));
+  evAuto.setAttribute('aria-pressed', ev.auto);
+  evAuto.addEventListener('click', () => { ev.auto = !ev.auto; evAuto.setAttribute('aria-pressed', ev.auto); });
+  evRedrive.addEventListener('click', () => { ev.dlq.splice(0).forEach(enqueue); evStats(); });
+  evStats();
+
+  /* Lab: CI/CD pipeline */
+  const CI = [['Commit', 'push to main', 350], ['Build', 'compile, package', 1100], ['Unit tests', 'fast, isolated', 900],
+    ['Integration', 'APIs + database', 1300], ['Security scan', 'dependencies', 800], ['Staging', 'deploy, smoke test', 1000], ['Production', 'canary rollout', 0]];
+  const ciList = byId('ci-stages'), ciLog = byId('ci-log'), ciPush = byId('ci-push');
+  ciList.innerHTML = CI.map(([n, d], i) => `<li><span class="ci-dot">${i + 1}</span><b>${n}</b><small>${d}</small></li>`).join('');
+  const ciItems = [...ciList.children];
+  const ci = { build: 0, live: 'v1.4.0', ok: 0, stop: 0, rb: 0 };
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  function ciMark(i, state) {
+    ciItems[i].className = state;
+    ciItems[i].firstElementChild.textContent = state === 'ok' ? '✓' : state === 'fail' ? '✕' : i + 1;
+  }
+  function ciLine(text, cls) {
+    const d = document.createElement('div');
+    d.className = cls; d.textContent = text;
+    ciLog.appendChild(d);
+    while (ciLog.children.length > 9) ciLog.firstElementChild.remove();
+  }
+  function ciRoll(pct, bad) {
+    byId('ci-bar').style.width = pct + '%';
+    byId('ci-bar').classList.toggle('bad', !!bad);
+    byId('ci-pct').textContent = pct + '%';
+  }
+  function ciStats() {
+    byId('ci-live').textContent = ci.live; byId('ci-ok').textContent = ci.ok;
+    byId('ci-stop').textContent = ci.stop; byId('ci-rb').textContent = ci.rb;
+  }
+  async function ciRun() {
+    ciPush.disabled = true;
+    const ver = 'v1.4.' + (++ci.build);
+    byId('ci-new').textContent = ver;
+    ciItems.forEach((_, i) => ciMark(i, ''));
+    ciRoll(0);
+    ciLine(`$ git push origin main   # ${Math.random().toString(16).slice(2, 9)}`, 'dim');
+    try {
+      for (let i = 0; i < CI.length - 1; i++) {
+        ciMark(i, 'run');
+        const ms = CI[i][2] * (0.8 + Math.random() * 0.4);
+        await wait(ms);
+        const fail = i === 2 && byId('ci-f-test').checked ? 'CartServiceTest > appliesDiscountOnce failed'
+          : i === 4 && byId('ci-f-vuln').checked ? 'high-severity CVE in a transitive dependency' : '';
+        if (fail) {
+          ciMark(i, 'fail'); ci.stop++;
+          ciLine(`✕ ${CI[i][0]}: ${fail}`, 'bad');
+          ciLine(`pipeline stopped, production stays on ${ci.live}`, 'dim');
+          return;
+        }
+        ciMark(i, 'ok');
+        ciLine(`✓ ${CI[i][0]} (${(ms / 1000).toFixed(1)} s)`, 'ok');
+      }
+      const p = CI.length - 1;
+      ciMark(p, 'run');
+      for (const pct of [10, 25, 50, 100]) {
+        ciRoll(pct);
+        await wait(900);
+        const err = byId('ci-f-prod').checked && pct >= 25 ? 4 + Math.random() * 2 : 0.1 + Math.random() * 0.3;
+        if (err > 1) {
+          ciRoll(pct, true);
+          ciLine(`✕ canary at ${pct}%: error rate ${err.toFixed(1)}%, budget is 1%`, 'bad');
+          ciLine(`↺ rolling back to ${ci.live}`, 'warn');
+          await wait(500);
+          ciRoll(0, true); ciMark(p, 'fail'); ci.rb++;
+          return;
+        }
+        ciLine(`✓ canary at ${pct}%: error rate ${err.toFixed(2)}%, p95 ${Math.round(180 + Math.random() * 60)} ms`, 'ok');
+      }
+      ciMark(p, 'ok'); ci.live = ver; ci.ok++;
+      ciLine(`released ${ver} to all traffic`, 'ok');
+    } finally {
+      ciStats(); ciPush.disabled = false;
+    }
+  }
+  ciPush.addEventListener('click', ciRun);
+  ciLine('waiting for a commit…', 'dim');
+  ciStats();
+
+  /* Lab: caching and data */
+  const BARS = 32, KEYS = 6, WEIGHTS = [0.38, 0.24, 0.15, 0.11, 0.07, 0.05];
+  const cache = new Map(); // product -> { exp, ttl, li }
+  const hist = []; // recent requests: [latency ms, 'hit' | 'miss' | 'write']
+  const dl = { mode: 'read', auto: false, lastAuto: 0, db: 0 };
+  const dlCache = byId('dl-cache'), dlDb = byId('dl-db'), dlList = byId('dl-entries'), dlTtl = byId('dl-ttl'), dlAuto = byId('dl-auto');
+  byId('dl-keys').innerHTML = Array.from({ length: KEYS }, (_, i) => `<button type="button" data-k="${i + 1}">#${i + 1}</button>`).join('');
+  byId('dl-chart').innerHTML = '<i></i>'.repeat(BARS);
+  const bars = [...byId('dl-chart').children];
+  const dlTrace = t => { byId('dl-trace').textContent = t; };
+  function flash(el, cls) { el.classList.remove('hit', 'miss', 'write'); void el.offsetWidth; el.classList.add(cls); }
+  function dlEvict(k) {
+    const e = cache.get(k);
+    if (!e) return false;
+    cache.delete(k);
+    e.li.classList.add('evict'); setTimeout(() => e.li.remove(), 300);
+    return true;
+  }
+  function dlRequest(k, kind) {
+    const now = performance.now(), ttl = dlTtl.value * 1000;
+    let lat;
+    if (kind === 'write') {
+      dl.db++; lat = 30 + Math.random() * 20;
+      const evicted = dlEvict(k);
+      flash(dlDb, 'write');
+      dlTrace(`PUT /products/${k} → db write ${lat | 0} ms → ${evicted ? 'cached copy evicted' : 'nothing cached to evict'}`);
+    } else {
+      if (cache.has(k) && cache.get(k).exp <= now) dlEvict(k);
+      if (cache.has(k)) {
+        kind = 'hit'; lat = 1 + Math.random() * 3;
+        flash(dlCache, 'hit');
+        dlTrace(`GET /products/${k} → cache hit, ${lat.toFixed(1)} ms`);
+      } else {
+        kind = 'miss'; dl.db++; lat = 80 + Math.random() * 60;
+        const li = document.createElement('li');
+        li.innerHTML = `<span>#${k}</span><i></i>`;
+        dlList.appendChild(li);
+        cache.set(k, { exp: now + ttl, ttl, li });
+        flash(dlDb, 'miss');
+        dlTrace(`GET /products/${k} → cache miss → db ${lat | 0} ms → cached for ${ttl / 1000} s`);
+      }
+    }
+    hist.push([lat, kind]);
+    if (hist.length > BARS) hist.shift();
+    dlStats();
+  }
+  function dlStats() {
+    bars.forEach((b, i) => {
+      const h = hist[i - (BARS - hist.length)];
+      b.style.height = h ? Math.max(4, h[0] / 140 * 100) + '%' : '0';
+      b.className = h ? h[1] : '';
+    });
+    const readsW = hist.filter(h => h[1] !== 'write');
+    const hitsW = readsW.filter(h => h[1] === 'hit').length;
+    byId('dl-ratio').textContent = readsW.length ? Math.round(hitsW / readsW.length * 100) + '%' : '–';
+    byId('dl-avg').textContent = readsW.length ? Math.round(readsW.reduce((t, h) => t + h[0], 0) / readsW.length) + ' ms' : '–';
+    byId('dl-db-n').textContent = dl.db;
+    byId('dl-empty').hidden = cache.size > 0;
+  }
+  function dlTick(now) {
+    cache.forEach((e, k) => {
+      const r = (e.exp - now) / e.ttl;
+      if (r > 0) { e.li.lastElementChild.style.transform = `scaleX(${r})`; return; }
+      dlEvict(k); dlStats();
+      dlTrace(`#${k} expired after ${e.ttl / 1000} s, so its next read goes to the database`);
+    });
+    if (dl.auto && lab === 'data' && labsVisible && now - dl.lastAuto > 450) {
+      dl.lastAuto = now;
+      let x = Math.random(), k = 0;
+      while (k < KEYS - 1 && (x -= WEIGHTS[k]) > 0) k++; // popular products are read more often
+      dlRequest(k + 1, Math.random() < 0.08 ? 'write' : 'read');
+    }
+  }
+  const dlModes = [...document.querySelectorAll('#dl-mode button')];
+  dlModes.forEach(b => b.addEventListener('click', () => {
+    dl.mode = b.dataset.mode;
+    dlModes.forEach(o => o.setAttribute('aria-pressed', o === b));
+    byId('dl-hint').textContent = dl.mode === 'read' ? 'click to read' : 'click to update';
+  }));
+  byId('dl-keys').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) dlRequest(+b.dataset.k, dl.mode); });
+  dlAuto.addEventListener('click', () => { dl.auto = !dl.auto; dlAuto.setAttribute('aria-pressed', dl.auto); });
+  byId('dl-flush').addEventListener('click', () => {
+    [...cache.keys()].forEach(k => dlEvict(k)); dlStats();
+    dlTrace('cache flushed: the next read of every product goes to the database');
+  });
+  dlTtl.addEventListener('input', () => { byId('dl-ttl-v').textContent = dlTtl.value + ' s'; });
+  dlStats();
+
+  (function labTick(now) {
+    if (labsVisible && lab === 'events') evStep(now);
+    dlTick(now);
+    requestAnimationFrame(labTick);
+  })(performance.now());
+
+  /* ---------- Skills explorer ---------- */
+  const SKILLS = [
+    ['Solution architecture', 'Architecture', 'Turning business goals into a system design: boundaries, integrations and non-functional targets, with the trade-offs written down.'],
+    ['Microservices', 'Architecture', 'Splitting a system along business capabilities so parts can be built, deployed and scaled on their own, and knowing when a modular monolith is the better call.'],
+    ['API design', 'Architecture', 'Contract-first REST APIs with clear resources, versioning, pagination and consistent errors, so front end and services can be built in parallel.'],
+    ['Integration patterns', 'Architecture', 'Picking the right style for each connection: synchronous APIs when an answer is needed now, messaging when it is not, batch for bulk data.'],
+    ['Resilience', 'Architecture', 'Timeouts, retries with backoff, circuit breakers and graceful degradation, so one failing dependency does not take everything down.', 'events'],
+    ['Data management', 'Data', 'Deciding where each piece of data lives, who owns it, how long it is kept and how it moves between systems.'],
+    ['Data modelling', 'Data', 'Schemas designed around how data is read and written, with one system of record for each entity.'],
+    ['SQL databases', 'Data', 'Relational models, transactions, indexes and query tuning for data that needs strong consistency.'],
+    ['NoSQL databases', 'Data', 'Document and key-value stores for flexible schemas, high write volumes, or data that is read by key.'],
+    ['Caching', 'Data', 'Cache-aside reads, time-to-live and invalidation on write, so hot data is fast without going stale.', 'data'],
+    ['Data consistency', 'Data', 'Choosing between strong and eventual consistency per use case, and making that choice visible to the people who depend on it.'],
+    ['Event processing', 'Events', 'Consuming streams of events reliably: ordering where it matters, backpressure, retries and replays.', 'events'],
+    ['Event-driven architecture', 'Events', 'Services publish facts such as "order placed" and others react, which keeps them loosely coupled and independently deployable.', 'events'],
+    ['Messaging and pub/sub', 'Events', 'Topics and queues that fan out to many consumers, each reading at its own pace, with backlogs that absorb traffic spikes.', 'events'],
+    ['Dead-letter queues', 'Events', 'Messages that keep failing are parked for inspection and redriven later, instead of blocking the stream.', 'events'],
+    ['Idempotent consumers', 'Events', 'Consumers that can safely see the same message twice, because at-least-once delivery means duplicates will happen.'],
+    ['CI/CD', 'Delivery', 'Every commit is built, tested and scanned automatically, and the same pipeline deploys to every environment.', 'cicd'],
+    ['Automated testing', 'Delivery', 'Unit, integration and acceptance tests as gates in the pipeline: many fast tests, few slow ones.', 'cicd'],
+    ['Release strategies', 'Delivery', 'Canary and staged rollouts with health checks, and a rollback path that is tested rather than hoped for.', 'cicd'],
+    ['Observability', 'Delivery', 'Logs, metrics and traces that show what production is doing, with alerts on what users actually feel: errors and latency.'],
+    ['Java', 'Stack', 'The main language for back-end services and APIs.'],
+    ['Angular', 'Stack', 'Front ends for business applications: component design, state, forms and performance.'],
+    ['Full-stack development', 'Stack', 'Working from the database schema through the API to the user interface, which keeps designs practical.'],
+    ['Google Cloud', 'Stack', 'Building and running services on Google Cloud.'],
+  ];
+  const CATS = ['All', 'Architecture', 'Data', 'Events', 'Delivery', 'Stack'];
+  const skillFilters = byId('skill-filters'), skillChips = byId('skill-chips'), skillCard = byId('skill-card');
+  skillFilters.innerHTML = CATS.map((c, i) => `<button type="button" data-cat="${c}" aria-pressed="${i === 0}">${c}<small>${c === 'All' ? SKILLS.length : SKILLS.filter(s => s[1] === c).length}</small></button>`).join('');
+  skillChips.innerHTML = SKILLS.map(([n], i) => `<li><button type="button" data-i="${i}" aria-pressed="false">${n}</button></li>`).join('');
+  const chipBtns = [...skillChips.querySelectorAll('button')];
+  let skillSel = 0;
+  function pickSkill(i) {
+    skillSel = i;
+    chipBtns.forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+    const [name, cat, desc, labName] = SKILLS[i];
+    skillCard.innerHTML = `<span class="skill-cat">${cat}</span><h3>${name}</h3><p>${desc}</p>`
+      + (labName ? `<button type="button" class="link" data-lab="${labName}">Try it in the lab →</button>` : '');
+    restart(skillCard, 'swap');
+  }
+  skillChips.addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) pickSkill(+b.dataset.i); });
+  skillFilters.addEventListener('click', e => {
+    const b = e.target.closest('[data-cat]');
+    if (!b) return;
+    [...skillFilters.children].forEach(o => o.setAttribute('aria-pressed', o === b));
+    chipBtns.forEach((c, k) => { c.parentElement.hidden = b.dataset.cat !== 'All' && SKILLS[k][1] !== b.dataset.cat; });
+    if (chipBtns[skillSel].parentElement.hidden) pickSkill(chipBtns.findIndex(c => !c.parentElement.hidden));
+  });
+  pickSkill(0);
+
   /* ---------- Scroll: progress, active section, reveals, counters ---------- */
   const head = document.querySelector('.site-head');
   function progress() {
@@ -1260,7 +1873,7 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
   navLinks.forEach(a => { const sec = document.querySelector(a.getAttribute('href')); if (sec) navIO.observe(sec); });
 
   if (!RM && 'IntersectionObserver' in window) {
-    const groups = ['.sec-head', '.tilt-zone', '.pipeline', '.team-grid', '.erp', '.path li', '.chips li', '.certs li', '.principles li', '.contact .wrap > *'];
+    const groups = ['.sec-head', '.lab-tabs', '.labs-body', '.skills', '.tilt-zone', '.pipeline', '.team-grid', '.erp', '.path li', '.principles li', '.contact .wrap > *'];
     const revIO = new IntersectionObserver(entries => {
       entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); revIO.unobserve(en.target); } });
     }, { threshold: 0.12 });
