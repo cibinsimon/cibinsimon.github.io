@@ -367,6 +367,28 @@ p { margin: 0; }
 .path h3 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; font-variation-settings: "wdth" 86; letter-spacing: -0.02em; line-height: 1.1; }
 .path p { color: var(--ink-soft); max-width: 60ch; }
 
+/* ---------- Portrait, toolkit ---------- */
+.who { display: flex; align-items: center; gap: 16px; }
+.avatar {
+  width: clamp(64px, 7vw, 84px); height: clamp(64px, 7vw, 84px); border-radius: 50%; object-fit: cover; flex: none;
+  border: 2px solid var(--cobalt); box-shadow: 0 0 0 5px color-mix(in srgb, var(--cobalt) 18%, transparent);
+  transition: transform .4s cubic-bezier(.2,.7,.2,1);
+}
+.avatar:hover { transform: rotate(-4deg) scale(1.06); }
+.toolkit { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
+.toolkit h3 { font-size: 1.25rem; font-weight: 650; font-variation-settings: "wdth" 90; margin-bottom: 16px; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.chips li {
+  padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface);
+  font-weight: 600; font-size: 0.9375rem; transition: border-color .25s, color .25s, transform .25s;
+}
+.chips li:hover { border-color: var(--cobalt); color: var(--cobalt); transform: translateY(-3px); }
+.certs { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.certs li { padding: 18px 20px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); display: grid; gap: 4px; }
+.certs b { font-family: var(--display); font-size: 1.15rem; font-variation-settings: "wdth" 88; }
+.certs span { color: var(--ink-soft); font-size: 0.9375rem; }
+@media (max-width: 900px) { .toolkit { grid-template-columns: minmax(0, 1fr); } }
+
 /* ---------- Principles ---------- */
 .principles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 5vw, 64px); }
 .principles li { padding-block: 28px; border-top: 1px solid var(--line); display: grid; gap: 10px; position: relative; }
@@ -447,7 +469,10 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
           <span class="line" aria-hidden="true">Mathew</span>
           <span class="line" aria-hidden="true">Simon</span>
         </h1>
-        <p class="role">Technical architect at Rappit</p>
+        <div class="who">
+          <img class="avatar" src="photo.jpg" width="84" height="84" alt="Portrait of Cibin Mathew Simon">
+          <p class="role">Technical architect at Rappit</p>
+        </div>
         <p class="lede">Eight years building software at Rappit. Today I am the technical architect of the team building an <strong>eCommerce platform</strong>, from the first requirement to production. Before that, I grew from a full-stack Java and Angular developer to architect while we built and maintained <strong>around 20 ERP applications</strong> for a large European chemical company.</p>
         <div class="actions">
           <a class="btn btn-solid" href="#platform" data-magnetic>See the platform</a>
@@ -547,25 +572,59 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
     <div class="wrap">
       <div class="sec-head">
         <h2>Eight years at Rappit</h2>
-        <p>From writing features as a full-stack developer, to architecting a portfolio of ERP applications, to leading the architecture of an eCommerce platform.</p>
+        <p>Five roles at one company: from associate software engineer, through team and technical lead, to solution architect.</p>
       </div>
       <ol class="path" id="path-list">
         <li>
-          <span class="when">2018 · Rappit</span>
-          <h3>Full-stack Java and Angular developer</h3>
-          <p>Started building ERP applications for a large European chemical company, working across the stack with Java and Angular.</p>
+          <span class="when">Jun 2018 to Jan 2020</span>
+          <h3>Associate Software Engineer</h3>
+          <p>Joined Rappit and started building ERP applications for a large European chemical company as a full-stack Java and Angular developer.</p>
         </li>
         <li>
-          <span class="when">Rappit · ERP solutions</span>
-          <h3>From developer to architect</h3>
-          <p>Grew into the architect role while we developed and maintained around 20 ERP applications for the same chemical company, keeping a large portfolio consistent, reliable and easy to change.</p>
+          <span class="when">Jan 2020 to Jan 2022</span>
+          <h3>Software Engineer</h3>
+          <p>Built and maintained features across the growing ERP portfolio, from APIs and databases to Angular front ends.</p>
+        </li>
+        <li>
+          <span class="when">Jan 2022 to Feb 2023</span>
+          <h3>Team Lead</h3>
+          <p>Started leading engineers on the ERP applications, alongside hands-on development.</p>
+        </li>
+        <li>
+          <span class="when">Jan 2023 to Mar 2024</span>
+          <h3>Technical Lead</h3>
+          <p>Owned technical direction across applications in a portfolio of around 20, keeping them consistent and easy to change.</p>
         </li>
         <li class="now">
-          <span class="when">2025 to present · Rappit</span>
-          <h3>Technical architect, eCommerce platform</h3>
-          <p>Technical architect of an expert team of ten building an eCommerce platform, from requirement gathering to production deployment. It is live and in use today.</p>
+          <span class="when">Feb 2024 to present</span>
+          <h3>Associate Solution Architect</h3>
+          <p>Architect on the ERP portfolio, and now technical architect of an expert team of ten building an eCommerce platform, from requirement gathering to production deployment.</p>
         </li>
       </ol>
+    </div>
+  </section>
+
+  <section class="section" id="toolkit">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Toolkit and certifications</h2>
+      </div>
+      <div class="toolkit">
+        <div>
+          <h3>What I work with</h3>
+          <ul class="chips">
+            <li>Java</li><li>Angular</li><li>Full-stack development</li><li>REST APIs</li>
+            <li>SQL databases</li><li>NoSQL databases</li><li>Google Cloud</li><li>Solution architecture</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Certifications</h3>
+          <ul class="certs">
+            <li><b>Professional Cloud Developer</b><span>Google Cloud · Issued Aug 2022</span></li>
+            <li><b>Industrial IoT on Google Cloud</b><span>Qwiklabs · Issued Aug 2020</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -600,9 +659,7 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
       <h2>Have a system to design or a team to grow?</h2>
       <p>I am happy to talk about software architecture, eCommerce platforms, ERP solutions and leading engineering teams.</p>
       <div class="actions">
-        <!-- Add your email or LinkedIn here, for example:
-        <a class="btn btn-ghost" href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener" data-magnetic>Connect on LinkedIn</a>
-        -->
+        <a class="btn btn-solid" href="https://www.linkedin.com/in/cibin-mathew-simon/" target="_blank" rel="noopener" data-magnetic>Connect on LinkedIn</a>
       </div>
     </div>
   </section>
@@ -611,7 +668,7 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
 <footer class="site-foot">
   <div class="wrap">
     <span>&copy; <span id="year">2026</span> Cibin Mathew Simon</span>
-    <span>Technical architect at Rappit</span>
+    <span>Technical architect at Rappit · Kerala, India</span>
   </div>
 </footer>
 
@@ -1203,7 +1260,7 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
   navLinks.forEach(a => { const sec = document.querySelector(a.getAttribute('href')); if (sec) navIO.observe(sec); });
 
   if (!RM && 'IntersectionObserver' in window) {
-    const groups = ['.sec-head', '.tilt-zone', '.pipeline', '.team-grid', '.erp', '.path li', '.principles li', '.contact .wrap > *'];
+    const groups = ['.sec-head', '.tilt-zone', '.pipeline', '.team-grid', '.erp', '.path li', '.chips li', '.certs li', '.principles li', '.contact .wrap > *'];
     const revIO = new IntersectionObserver(entries => {
       entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); revIO.unobserve(en.target); } });
     }, { threshold: 0.12 });

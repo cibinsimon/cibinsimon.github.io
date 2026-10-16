@@ -1,4 +1,5 @@
 """Wrap src/page.html into a complete document at public/index.html for GitHub Pages."""
+import shutil
 from pathlib import Path
 
 src = Path(__file__).parent / "src" / "page.html"
@@ -21,4 +22,5 @@ doc = f"""<!doctype html>
 out = Path(__file__).parent / "public" / "index.html"
 out.parent.mkdir(exist_ok=True)
 out.write_text(doc, encoding="utf-8")
+shutil.copy(src.parent / "photo.jpg", out.parent / "photo.jpg")
 print(f"wrote {out}")
