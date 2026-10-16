@@ -1,4 +1,4 @@
-"""Wrap src/page.html into a complete document at public/index.html for GitLab Pages."""
+"""Wrap src/page.html into a complete document at public/index.html for GitHub Pages."""
 from pathlib import Path
 
 src = Path(__file__).parent / "src" / "page.html"
