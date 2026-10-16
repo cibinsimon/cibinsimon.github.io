@@ -1,6 +1,6 @@
 <title>Cibin Simon</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Cibin Simon is a solution architect with eight years in software. He owns an eCommerce platform end to end and grew an engineering team from 3 to 16 people.">
+<meta name="description" content="Cibin Simon is a technical architect at Rappit, leading the architecture of an eCommerce platform built by a team of ten full-stack engineers, after years building ERP applications for a large European chemical company.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap">
@@ -299,9 +299,6 @@ p { margin: 0; }
 .stage-note { min-height: 6.4em; }
 .stage-note b { display: block; font-family: var(--display); font-size: 1.25rem; font-variation-settings: "wdth" 88; margin-bottom: 6px; }
 .stage-note p { color: var(--ink-soft); }
-.range-row { display: grid; gap: 10px; }
-.range-row label { font-size: 0.9375rem; font-weight: 600; }
-input[type="range"] { width: 100%; accent-color: var(--cobalt); cursor: pointer; }
 .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.875rem; color: var(--ink-soft); }
 .legend span { display: inline-flex; align-items: center; gap: 8px; }
 .legend i { width: 12px; height: 12px; border-radius: 50%; background: var(--cobalt); }
@@ -370,7 +367,6 @@ input[type="range"] { width: 100%; accent-color: var(--cobalt); cursor: pointer;
 .cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--cobalt); }
 html.has-cursor .cursor, html.has-cursor .cursor-dot { opacity: 1; }
 html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canvas { cursor: none; }
-html.has-cursor input[type="range"] { cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -405,8 +401,8 @@ html.has-cursor input[type="range"] { cursor: pointer; }
           <span class="line" aria-hidden="true">Cibin</span>
           <span class="line" aria-hidden="true">Simon</span>
         </h1>
-        <p class="role">Solution architect</p>
-        <p class="lede">Eight years building software. For the past year I have owned an <strong>eCommerce platform from the first requirement to production</strong>, where it serves customers today. Before that, I grew an engineering team <strong>from 3 people to 16</strong>.</p>
+        <p class="role">Technical architect at Rappit</p>
+        <p class="lede">Eight years building software at Rappit. Today I am the technical architect of the team building an <strong>eCommerce platform</strong>, from the first requirement to production. Before that, I grew from a full-stack Java and Angular developer to architect while we built and maintained <strong>around 20 ERP applications</strong> for a large European chemical company.</p>
         <div class="actions">
           <a class="btn btn-solid" href="#platform" data-magnetic>See the platform</a>
           <a class="btn btn-ghost" href="#contact" data-magnetic>Get in touch</a>
@@ -428,15 +424,16 @@ html.has-cursor input[type="range"] { cursor: pointer; }
         <div class="sec-head">
           <span class="live"><i aria-hidden="true"></i>Live in production</span>
           <h2>An eCommerce platform, owned end to end</h2>
-          <p>I designed, built and shipped this platform over the past year and I am still its technical owner. I took it through every stage of the software lifecycle, from gathering requirements with the business to deploying it to production and keeping it healthy there.</p>
+          <p>As technical architect, I lead the architecture of the platform our team of ten designed, built and shipped. Together we took it through every stage of the software lifecycle, from gathering requirements with the business to deploying it to production and keeping it healthy there.</p>
         </div>
         <div class="tilt-zone">
           <div class="tilt" id="tilt">
             <h3>My role on the platform</h3>
             <dl class="facts">
-              <div><dt>Title</dt><dd>Solution architect and technical owner</dd></div>
+              <div><dt>Title</dt><dd>Technical architect</dd></div>
+              <div><dt>Team</dt><dd>Ten full-stack engineers: leads and mediors</dd></div>
               <div><dt>Scope</dt><dd>Requirements through production deployment</dd></div>
-              <div><dt>Timeline</dt><dd>One year, still ongoing</dd></div>
+              <div><dt>Company</dt><dd>Rappit</dd></div>
               <div><dt>Status</dt><dd>Used by customers in production</dd></div>
             </dl>
           </div>
@@ -461,24 +458,17 @@ html.has-cursor input[type="range"] { cursor: pointer; }
   <section class="section" id="team">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Growing a team from 3 engineers to 16</h2>
-        <p>At my previous company I built the engineering team behind the product we developed and maintained. Drag the slider to watch the team take shape as it grew.</p>
+        <h2>An expert team of ten</h2>
+        <p>The eCommerce platform is built by a team of ten full-stack engineers, leads and mediors, with me as technical architect. Move your pointer over the team to nudge it.</p>
       </div>
       <div class="team-grid">
         <div class="org" id="org" aria-hidden="true">
           <svg id="org-svg"></svg>
         </div>
         <div class="team-side">
-          <p class="headcount"><span id="headcount">16</span><small>people on the team</small></p>
-          <div class="stage-note" id="stage-note" aria-live="polite"></div>
-          <div class="range-row">
-            <label for="team-size">Team size</label>
-            <input type="range" id="team-size" min="3" max="16" step="1" value="16">
-          </div>
-          <div class="actions">
-            <button class="btn btn-ghost" type="button" id="replay" data-magnetic>Replay the growth</button>
-          </div>
-          <div class="legend"><span><i class="m"></i>Me</span><span><i class="l"></i>Squad lead</span><span><i></i>Engineer</span></div>
+          <p class="headcount"><span id="headcount">10</span><small>people on the team</small></p>
+          <div class="stage-note" id="stage-note"><b>Leads and medior full-stack engineers</b><p>Every engineer works across the stack. Leads own the day-to-day of their stream, while I own the architecture and keep the technical direction consistent.</p></div>
+          <div class="legend"><span><i class="m"></i>Me</span><span><i class="l"></i>Lead</span><span><i></i>Medior engineer</span></div>
         </div>
       </div>
     </div>
@@ -487,24 +477,24 @@ html.has-cursor input[type="range"] { cursor: pointer; }
   <section class="section" id="path">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Eight years, three chapters</h2>
-        <p>From writing features, to leading the people who write them, to owning the architecture of a whole platform.</p>
+        <h2>Eight years at Rappit</h2>
+        <p>From writing features as a full-stack developer, to architecting a portfolio of ERP applications, to leading the architecture of an eCommerce platform.</p>
       </div>
       <ol class="path" id="path-list">
         <li>
-          <span class="when">2018</span>
-          <h3>Software engineer</h3>
-          <p>Started building and shipping features across the stack, and learned how real systems behave once customers depend on them.</p>
+          <span class="when">2018 · Rappit</span>
+          <h3>Full-stack Java and Angular developer</h3>
+          <p>Started building ERP applications for a large European chemical company, working across the stack with Java and Angular.</p>
         </li>
         <li>
-          <span class="when">Previous company</span>
-          <h3>Engineering lead, 3 to 16 people</h3>
-          <p>Hired, onboarded and led a growing team while we developed and maintained the company's product. Set up the structure, standards and rhythm that let sixteen people ship together.</p>
+          <span class="when">Rappit · ERP solutions</span>
+          <h3>From developer to architect</h3>
+          <p>Grew into the architect role while we developed and maintained around 20 ERP applications for the same chemical company, keeping a large portfolio consistent, reliable and easy to change.</p>
         </li>
         <li class="now">
-          <span class="when">2025 to present</span>
-          <h3>Solution architect, eCommerce platform</h3>
-          <p>Own the architecture and delivery of an eCommerce platform, from requirement gathering to production deployment. It is live and in use today.</p>
+          <span class="when">2025 to present · Rappit</span>
+          <h3>Technical architect, eCommerce platform</h3>
+          <p>Technical architect of an expert team of ten building an eCommerce platform, from requirement gathering to production deployment. It is live and in use today.</p>
         </li>
       </ol>
     </div>
@@ -529,8 +519,8 @@ html.has-cursor input[type="range"] { cursor: pointer; }
           <p>I design and I build. Writing code on the platform keeps my architecture decisions honest and practical for the team.</p>
         </li>
         <li>
-          <h3>Grow teams with clear ownership</h3>
-          <p>Teams scale when everyone knows what they own. I hire carefully, set shared standards and give leads room to lead.</p>
+          <h3>Lead through clear ownership</h3>
+          <p>A team works best when everyone knows what they own. I set shared standards and give leads room to lead.</p>
         </li>
       </ul>
     </div>
@@ -539,7 +529,7 @@ html.has-cursor input[type="range"] { cursor: pointer; }
   <section class="contact" id="contact">
     <div class="wrap">
       <h2>Have a system to design or a team to grow?</h2>
-      <p>I am happy to talk about solution architecture, eCommerce platforms and building engineering teams.</p>
+      <p>I am happy to talk about software architecture, eCommerce platforms, ERP solutions and leading engineering teams.</p>
       <div class="actions">
         <a class="btn btn-solid" href="https://github.com/cibinsimon" target="_blank" rel="noopener" data-magnetic>Visit my GitHub</a>
         <!-- Add your email or LinkedIn here, for example:
@@ -553,7 +543,7 @@ html.has-cursor input[type="range"] { cursor: pointer; }
 <footer class="site-foot">
   <div class="wrap">
     <span>&copy; <span id="year">2026</span> Cibin Simon</span>
-    <span>Solution architect</span>
+    <span>Technical architect at Rappit</span>
   </div>
 </footer>
 
@@ -936,19 +926,10 @@ html.has-cursor input[type="range"] { cursor: pointer; }
     setInterval(() => { if (inView && !userPicked) select((cur + 1) % STAGES.length); }, 3200);
   }
 
-  /* ---------- Team growth ---------- */
+  /* ---------- Team ---------- */
   const org = document.getElementById('org');
   const svg = document.getElementById('org-svg');
-  const range = document.getElementById('team-size');
-  const headcount = document.getElementById('headcount');
-  const note = document.getElementById('stage-note');
-  const NOTES = [
-    [3, 'A founding crew', 'Three of us doing everything: building, reviewing, releasing and supporting production.'],
-    [5, 'First hires, two squads', 'Hiring and onboarding the first engineers, and splitting the work into two streams with clear ownership.'],
-    [9, 'Three squads with leads', 'Squad leads take day-to-day ownership while I focus on architecture, hiring and delivery.'],
-    [13, 'Four squads', 'Shared coding and review standards keep a bigger team building the same way.'],
-    [16, 'Sixteen engineers, four squads', 'A team that develops and maintains the product on a steady release rhythm, with leads, onboarding and shared standards.'],
-  ];
+  const TEAM = 10;
   const people = [];
   const groupsOut = [];
   let oW = 0, oH = 0;
@@ -983,11 +964,6 @@ html.has-cursor input[type="range"] { cursor: pointer; }
       }
     });
     for (let i = people.length - 1; i >= n; i--) { people[i].el.remove(); people.pop(); }
-    headcount.textContent = n;
-    const nt = NOTES.filter(([min]) => n >= min).pop();
-    note.innerHTML = `<b>${nt[1]}</b><p>${nt[2]}</p>`;
-    range.value = n;
-    range.setAttribute('aria-valuetext', n + ' people');
     drawLines();
   }
   function drawLines() {
@@ -1005,28 +981,16 @@ html.has-cursor input[type="range"] { cursor: pointer; }
   }
   function orgLayout() {
     const r = org.getBoundingClientRect(); oW = r.width; oH = r.height;
-    arrange(+range.value);
+    arrange(TEAM);
     if (RM) people.forEach(p => { p.x = p.tx; p.y = p.ty; place(p); });
   }
   function place(p) { p.el.style.transform = `translate(${p.x + p.ox}px, ${p.y + p.oy}px)`; }
   new ResizeObserver(orgLayout).observe(org);
   org.addEventListener('pointermove', e => { const r = org.getBoundingClientRect(); op.x = e.clientX - r.left; op.y = e.clientY - r.top; op.in = true; });
   org.addEventListener('pointerleave', () => op.in = false);
-  range.addEventListener('input', () => { stopReplay(); arrange(+range.value); if (RM) orgLayout(); });
 
-  let orgVisible = false, replayTimer = 0, replayed = false;
-  function stopReplay() { clearInterval(replayTimer); replayTimer = 0; }
-  function replay() {
-    stopReplay();
-    let n = 3; arrange(n);
-    if (RM) { orgLayout(); return; }
-    replayTimer = setInterval(() => { n++; arrange(n); if (n >= 16) stopReplay(); }, 380);
-  }
-  document.getElementById('replay').addEventListener('click', replay);
-  new IntersectionObserver(([en]) => {
-    orgVisible = en.isIntersecting;
-    if (orgVisible && !replayed && !RM) { replayed = true; replay(); }
-  }, { threshold: 0.45 }).observe(org);
+  let orgVisible = false;
+  new IntersectionObserver(([en]) => { orgVisible = en.isIntersecting; }, { threshold: 0.45 }).observe(org);
   (function orgTick() {
     if (orgVisible && !RM) {
       people.forEach(p => {
