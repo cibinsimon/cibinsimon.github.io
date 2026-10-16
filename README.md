@@ -1,6 +1,6 @@
 # cibinsimon.github.io
 
-Personal site of Cibin Simon, solution architect.
+Personal site of Cibin Mathew Simon, technical architect at Rappit.
 
 - Edit the page in `src/page.html` (single file: styles, content and scripts).
 - `python build.py` writes the deployable page to `public/index.html`.

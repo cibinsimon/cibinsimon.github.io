@@ -1,6 +1,6 @@
-<title>Cibin Simon</title>
+<title>Cibin Mathew Simon</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Cibin Simon is a technical architect at Rappit, leading the architecture of an eCommerce platform built by a team of ten full-stack engineers, after years building ERP applications for a large European chemical company.">
+<meta name="description" content="Cibin Mathew Simon is a technical architect at Rappit, leading the architecture of an eCommerce platform built by a team of ten full-stack engineers, after years building ERP applications for a large European chemical company.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap">
@@ -112,7 +112,7 @@ p { margin: 0; }
 }
 .hero-copy { display: grid; gap: 22px; position: relative; z-index: 2; min-width: 0; }
 .name {
-  font-size: clamp(4.2rem, 11.5vw, 9.6rem); line-height: 0.86; letter-spacing: -0.035em;
+  font-size: clamp(3.8rem, 10vw, 8.4rem); line-height: 0.86; letter-spacing: -0.035em;
   font-weight: 700; display: grid;
 }
 .name .line { display: block; white-space: nowrap; }
@@ -306,6 +306,49 @@ p { margin: 0; }
 .legend i.m { background: var(--ink); }
 @media (max-width: 900px) { .team-grid { grid-template-columns: minmax(0, 1fr); } .org { height: 340px; } }
 
+/* ---------- ERP portfolio ---------- */
+.erp { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: clamp(24px, 4vw, 48px); align-items: start; }
+.erp-board {
+  position: relative; border-radius: 24px; background: var(--surface); border: 1px solid var(--line);
+  padding: clamp(16px, 3vw, 28px); touch-action: pan-y;
+}
+.erp-links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 1; }
+.erp-links line { stroke: var(--cobalt); stroke-opacity: .7; stroke-width: 2; stroke-linecap: round; opacity: 0; transition: opacity .6s; }
+.erp-board.arch .erp-links line { opacity: 1; }
+.erp-links circle { fill: var(--signal); }
+.erp-grid { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(10px, 2.2vw, 22px); }
+.app {
+  aspect-ratio: 1; border-radius: 14px; border: 1.5px solid var(--line); background: var(--paper);
+  display: grid; place-items: center; font: 700 clamp(.8rem, 1.6vw, 1rem)/1 var(--display); color: var(--ink-soft);
+  opacity: .4; transition: background .35s, border-color .35s, color .35s, transform .35s, opacity .35s;
+  font-variant-numeric: tabular-nums; user-select: none;
+}
+.erp-board.arch .app { opacity: 1; border-color: color-mix(in srgb, var(--cobalt) 55%, var(--line)); color: var(--ink); }
+.app.focus { opacity: 1; background: var(--cobalt); border-color: var(--cobalt); color: var(--surface); transform: scale(1.06); }
+.erp-board.arch .app.focus { background: color-mix(in srgb, var(--cobalt) 18%, var(--surface)); color: var(--ink); }
+.app.wave { animation: wave .7s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes wave {
+  40% { transform: scale(1.12); background: var(--signal); border-color: var(--signal); color: #1B1300; opacity: 1; }
+}
+.erp-side { display: grid; gap: 20px; align-content: start; }
+.seg { justify-self: start; display: inline-flex; padding: 4px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+.seg button {
+  border: 0; background: none; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  font: 600 0.9375rem/1 var(--body); color: var(--ink-soft); transition: background .3s, color .3s;
+}
+.seg button[aria-checked="true"] { background: var(--ink); color: var(--paper); }
+@media (max-width: 900px) { .erp { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Scroll effects ---------- */
+.progress {
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--cobalt);
+  transform: scaleX(var(--sp, 0)); transform-origin: left; pointer-events: none;
+}
+.nav a.active { color: var(--ink); }
+.nav a.active::after { transform: scaleX(1); }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.reveal.in { opacity: 1; transform: none; }
+
 /* ---------- Path ---------- */
 .path { position: relative; list-style: none; margin: 0; padding: 0 0 0 56px; display: grid; gap: clamp(36px, 5vw, 56px); max-width: 860px; }
 .path::before, .path::after {
@@ -380,10 +423,11 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
 
 <header class="site-head">
   <div class="wrap">
-    <a class="mark" href="#top"><span class="mark-node" aria-hidden="true"></span>Cibin Simon</a>
+    <a class="mark" href="#top"><span class="mark-node" aria-hidden="true"></span>Cibin Mathew Simon</a>
     <nav class="nav" aria-label="Sections">
       <a href="#platform">Platform</a>
       <a href="#team">Team</a>
+      <a href="#erp">ERP</a>
       <a href="#path">Path</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -391,14 +435,16 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
     </button>
   </div>
+  <span class="progress" aria-hidden="true"></span>
 </header>
 
 <main id="top">
   <section class="hero" id="hero">
     <div class="wrap">
       <div class="hero-copy">
-        <h1 class="name" aria-label="Cibin Simon">
+        <h1 class="name" aria-label="Cibin Mathew Simon">
           <span class="line" aria-hidden="true">Cibin</span>
+          <span class="line" aria-hidden="true">Mathew</span>
           <span class="line" aria-hidden="true">Simon</span>
         </h1>
         <p class="role">Technical architect at Rappit</p>
@@ -474,6 +520,29 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
     </div>
   </section>
 
+  <section class="section" id="erp">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Around 20 ERP applications</h2>
+        <p>Before the eCommerce platform, we developed and maintained around 20 ERP applications for a large European chemical company. Switch the view to see how my focus changed as I grew from developer to architect, and hover or tap an application.</p>
+      </div>
+      <div class="erp">
+        <div class="erp-board" id="erp-board" aria-hidden="true">
+          <svg class="erp-links" id="erp-links"></svg>
+          <div class="erp-grid" id="erp-grid"></div>
+        </div>
+        <div class="erp-side">
+          <div class="seg" role="radiogroup" aria-label="Point of view" id="erp-seg">
+            <button type="button" role="radio" aria-checked="true" data-view="dev">As a developer</button>
+            <button type="button" role="radio" aria-checked="false" data-view="arch">As an architect</button>
+          </div>
+          <p class="headcount"><span id="erp-count">1</span><small id="erp-count-label">application in focus</small></p>
+          <div class="stage-note" id="erp-note" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="path">
     <div class="wrap">
       <div class="sec-head">
@@ -531,7 +600,6 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
       <h2>Have a system to design or a team to grow?</h2>
       <p>I am happy to talk about software architecture, eCommerce platforms, ERP solutions and leading engineering teams.</p>
       <div class="actions">
-        <a class="btn btn-solid" href="https://github.com/cibinsimon" target="_blank" rel="noopener" data-magnetic>Visit my GitHub</a>
         <!-- Add your email or LinkedIn here, for example:
         <a class="btn btn-ghost" href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener" data-magnetic>Connect on LinkedIn</a>
         -->
@@ -542,7 +610,7 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
 
 <footer class="site-foot">
   <div class="wrap">
-    <span>&copy; <span id="year">2026</span> Cibin Simon</span>
+    <span>&copy; <span id="year">2026</span> Cibin Mathew Simon</span>
     <span>Technical architect at Rappit</span>
   </div>
 </footer>
@@ -1007,6 +1075,151 @@ html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor canv
     }
     requestAnimationFrame(orgTick);
   })();
+
+  /* ---------- ERP portfolio ---------- */
+  const erpBoard = document.getElementById('erp-board');
+  const erpGrid = document.getElementById('erp-grid');
+  const erpLinks = document.getElementById('erp-links');
+  const erpCount = document.getElementById('erp-count');
+  const erpCountLabel = document.getElementById('erp-count-label');
+  const erpNote = document.getElementById('erp-note');
+  const APPS = 20, COLS = 5;
+  const VIEWS = {
+    dev: ['Full-stack Java and Angular developer', 'Building and shipping features inside one application at a time, across the whole stack from database to Angular front end.'],
+    arch: ['Architect across the portfolio', 'Keeping around 20 applications consistent: shared standards, clean integrations between them, and one way to build, test and release.'],
+  };
+  const tiles = Array.from({ length: APPS }, (_, i) => {
+    const t = document.createElement('div');
+    t.className = 'app'; t.textContent = String(i + 1).padStart(2, '0');
+    t.dataset.i = i; erpGrid.appendChild(t); return t;
+  });
+  const cell = i => [i % COLS, Math.floor(i / COLS)];
+  const erpEdges = [];
+  tiles.forEach((_, i) => {
+    const [c, r] = cell(i);
+    if (c < COLS - 1) erpEdges.push([i, i + 1]);
+    if (i + COLS < APPS) erpEdges.push([i, i + COLS]);
+  });
+  let view = 'dev', focusIdx = 6, centers = [];
+  function erpLayout() {
+    const b = erpBoard.getBoundingClientRect();
+    const rects = tiles.map(t => { const r = t.getBoundingClientRect(); return { l: r.left - b.left, t: r.top - b.top, w: r.width, h: r.height }; });
+    centers = rects.map(r => [r.l + r.w / 2, r.t + r.h / 2]);
+    // links run through the gaps between neighbouring applications
+    erpLinks.innerHTML = erpEdges.map(([a, c]) => {
+      const A = rects[a], C = rects[c];
+      return c === a + 1
+        ? `<line x1="${A.l + A.w}" y1="${centers[a][1]}" x2="${C.l}" y2="${centers[c][1]}"></line>`
+        : `<line x1="${centers[a][0]}" y1="${A.t + A.h}" x2="${centers[c][0]}" y2="${C.t}"></line>`;
+    }).join('');
+  }
+  new ResizeObserver(erpLayout).observe(erpBoard);
+
+  function countTo(el, to, ms) {
+    const from = +el.textContent || 0;
+    if (RM || from === to) { el.textContent = to; return; }
+    const t0 = performance.now();
+    (function step(now) {
+      const k = clamp((now - t0) / ms, 0, 1), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(from + (to - from) * e);
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+  function wave(from) {
+    if (RM) return;
+    const [fc, fr] = cell(from);
+    tiles.forEach((t, i) => {
+      const [c, r] = cell(i);
+      t.classList.remove('wave'); void t.offsetWidth;
+      t.style.animationDelay = (Math.hypot(c - fc, r - fr) * 70) + 'ms';
+      t.classList.add('wave');
+    });
+  }
+  function setFocus(i) {
+    focusIdx = i;
+    tiles.forEach((t, k) => t.classList.toggle('focus', k === i));
+  }
+  function setView(v) {
+    view = v;
+    erpBoard.classList.toggle('arch', v === 'arch');
+    document.querySelectorAll('#erp-seg button').forEach(b => b.setAttribute('aria-checked', b.dataset.view === v));
+    erpNote.innerHTML = `<b>${VIEWS[v][0]}</b><p>${VIEWS[v][1]}</p>`;
+    countTo(erpCount, v === 'arch' ? APPS : 1, 900);
+    erpCountLabel.textContent = v === 'arch' ? 'applications in view' : 'application in focus';
+    if (v === 'arch') wave(focusIdx);
+  }
+  document.querySelectorAll('#erp-seg button').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
+  document.getElementById('erp-seg').addEventListener('keydown', e => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    setView(view === 'dev' ? 'arch' : 'dev');
+    document.querySelector(`#erp-seg [data-view="${view}"]`).focus();
+  });
+  erpGrid.addEventListener('pointerover', e => { const t = e.target.closest('.app'); if (t) setFocus(+t.dataset.i); });
+  erpGrid.addEventListener('click', e => { const t = e.target.closest('.app'); if (t) { setFocus(+t.dataset.i); wave(+t.dataset.i); } });
+  setFocus(focusIdx); setView('dev');
+
+  // requests travelling between applications in the architect view
+  let erpVisible = false;
+  new IntersectionObserver(([en]) => { erpVisible = en.isIntersecting; }, { threshold: 0.2 }).observe(erpBoard);
+  const NS = 'http://www.w3.org/2000/svg';
+  const flows = [];
+  let lastFlow = 0;
+  (function erpTick(now) {
+    if (erpVisible && view === 'arch' && !RM && centers.length) {
+      if (now - lastFlow > 260) {
+        lastFlow = now;
+        const [a, b] = erpEdges[(Math.random() * erpEdges.length) | 0];
+        const dot = document.createElementNS(NS, 'circle'); dot.setAttribute('r', 3.5);
+        erpLinks.appendChild(dot);
+        flows.push(Math.random() < 0.5 ? { dot, a, b, t0: now } : { dot, a: b, b: a, t0: now });
+      }
+    }
+    for (let i = flows.length - 1; i >= 0; i--) {
+      const f = flows[i], k = (now - f.t0) / 700;
+      if (k >= 1 || view !== 'arch') { f.dot.remove(); flows.splice(i, 1); continue; }
+      const [x1, y1] = centers[f.a], [x2, y2] = centers[f.b];
+      f.dot.setAttribute('cx', lerp(x1, x2, k)); f.dot.setAttribute('cy', lerp(y1, y2, k));
+    }
+    requestAnimationFrame(erpTick);
+  })(performance.now());
+
+  /* ---------- Scroll: progress, active section, reveals, counters ---------- */
+  const head = document.querySelector('.site-head');
+  function progress() {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    head.style.setProperty('--sp', max > 0 ? (scrollY / max).toFixed(4) : 0);
+  }
+  addEventListener('scroll', progress, { passive: true });
+  addEventListener('resize', progress);
+  progress();
+
+  const navLinks = [...document.querySelectorAll('.nav a')];
+  const navIO = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  navLinks.forEach(a => { const sec = document.querySelector(a.getAttribute('href')); if (sec) navIO.observe(sec); });
+
+  if (!RM && 'IntersectionObserver' in window) {
+    const groups = ['.sec-head', '.tilt-zone', '.pipeline', '.team-grid', '.erp', '.path li', '.principles li', '.contact .wrap > *'];
+    const revIO = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); revIO.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    groups.forEach(sel => document.querySelectorAll(sel).forEach((el, i) => {
+      el.classList.add('reveal');
+      if (sel.includes(' ')) el.style.setProperty('--d', (i % 4) * 0.08 + 's');
+      revIO.observe(el);
+    }));
+  }
+
+  const teamCount = document.getElementById('headcount');
+  if (!RM) {
+    teamCount.textContent = 0;
+    const tcIO = new IntersectionObserver(([en]) => { if (en.isIntersecting) { countTo(teamCount, TEAM, 1100); tcIO.disconnect(); } }, { threshold: 0.6 });
+    tcIO.observe(teamCount);
+  }
 
   /* ---------- Career path fill ---------- */
   const pathList = document.getElementById('path-list');
